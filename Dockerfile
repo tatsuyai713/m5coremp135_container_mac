@@ -11,7 +11,10 @@ ARG HOME=/home/$USERNAME
 USER root
 
 RUN apt update
-RUN apt install -y sudo vim curl git nano
+RUN apt install -y sudo vim curl git nano \ 
+&& apt clean \
+&& rm -rf /var/cache/apt/archives/* \
+&& rm -rf /var/lib/apt/lists/* 
 
 RUN useradd -u $UID -m $USERNAME && \
         echo "$USERNAME:$USERNAME" | chpasswd && \
