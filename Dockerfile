@@ -1,4 +1,4 @@
-FROM m5coremp135:20240507
+FROM ghcr.io/tatsuyai713/m5coremp135:20240507
 
 ARG UID=9001
 ARG GID=9001
