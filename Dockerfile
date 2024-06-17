@@ -1,4 +1,4 @@
-FROM ghcr.io/tatsuyai713/m5coremp135:20240507
+FROM ghcr.io/tatsuyai713/m5coremp135:20240515
 
 ARG UID=9001
 ARG GID=9001
@@ -9,8 +9,10 @@ ARG USERNAME=$UNAME
 ARG HOME=/home/$USERNAME
 
 USER root
+RUN sed -i -e s#https://mirrors.ustc.edu.cn/debian#http://ftp.jp.debian.org/debian# /etc/apt/sources.list
 
 RUN apt update
+RUN apt upgrade -y
 RUN apt install -y sudo vim curl git nano \ 
 && apt clean \
 && rm -rf /var/cache/apt/archives/* \

@@ -12,7 +12,7 @@ if [ "$(docker image ls -q ${NAME_IMAGE})" ]; then
 fi
 
 if [ ! "$(docker image ls -q ${BASE_IMAGE})" ]; then
-	docker import ./m5_rootfs_20240507.tar.gz m5coremp135:20240507
+	docker import ./m5_rootfs_20240515.tar.gz m5coremp135:20240515
 fi
 
 echo "Build Container"
