@@ -4,11 +4,18 @@ fast_dds_gen_version="2.4.0"
 
 FAST_DDS_WORK_DIR=./dds_build
 
-sudo bash -c 'echo "deb http://deb.debian.org/debian unstable main non-free contrib" >> /etc/apt/sources.list'
-sudo bash -c 'echo -e "Package: * \nPin: release a=stable\nPin-Priority: 900\n\nPackage: *\nPin: release a=unstable\nPin-Priority: 50\n" >> /etc/apt/preferences'
+if ! grep -q "deb http://deb.debian.org/debian unstable main non-free contrib" /etc/apt/sources.list; then
+    sudo bash -c 'echo "deb http://deb.debian.org/debian unstable main non-free contrib" >> /etc/apt/sources.list'
+fi
+
+if ! grep -q "Package: * \nPin: release a=stable\nPin-Priority: 900\n\nPackage: *\nPin: release a=unstable\nPin-Priority: 50" /etc/apt/preferences.d/99pin-unstable; then
+    sudo bash -c 'echo -e "Package: * \nPin: release a=stable\nPin-Priority: 900\n\nPackage: *\nPin: release a=unstable\nPin-Priority: 50\n" >> /etc/apt/preferences.d/99pin-unstable'
+fi
+
 sudo apt update
 sudo apt purge default-jre default-jdk -y --auto-remove
 sudo apt install -y openjdk-11-jdk
+sudo apt-mark hold openjdk-11-jdk
 
 p11-kit list-modules
 
@@ -64,3 +71,6 @@ else
   source ~/.bashrc
 fi
 sudo ldconfig
+
+sudo sed -i '/deb http:\/\/deb.debian.org\/debian unstable main non-free contrib/d' /etc/apt/sources.list
+sudo rm -f /etc/apt/preferences.d/99pin-unstable
